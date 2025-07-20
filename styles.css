@@ -1,9 +1,13 @@
 :root {
-  --background: #573d1c;
-  --primary-color: #d9ae61;
-  --secondary-color: #c8963e;
-  --accent-color: #ffffff;
-  --text-color: #f9f9f9;
+  --background: #a78bfa;
+  --card-bg: #ffffff;
+  --primary-color: #7c3aed;
+  --secondary-color: #d4a2fd;
+  --accent-pink: #f472b6;
+  --accent-yellow: #facc15;
+  --accent-cyan: #38bdf8;
+  --text-color: #ffffff;
+  --text-dark: #1f1f1f;
 }
 
 * {
@@ -24,4 +28,94 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+h1,
+h2 {
+  text-align: center;
+  color: var(--accent-color);
+}
+
+h1 {
+  text-transform: uppercase;
+  margin-top: 100px;
+  margin-bottom: 10px;
+  font-size: 3rem;
+  font-weight: 800;
+}
+
+h2 {
+  margin-top: 10px;
+  margin-bottom: 30px;
+  font-size: 1rem;
+}
+
+.wrapper {
+  width: 700px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#todo-input {
+  box-sizing: border-box;
+  padding: 12px 20px;
+  width: 100%;
+  background: var(--card-bg);
+  border: none;
+  border-radius: 1000px;
+  font: inherit;
+  color: var(--text-dark);
+  caret-color: var(--primary-color);
+}
+
+#todo-input:focus {
+  outline: none;
+}
+
+form {
+  height: 50px;
+  position: relative;
+  margin-bottom: 15px;
+}
+
+#add-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: var(--secondary-color);
+  height: 100%;
+  padding: 0px 30px;
+  border: 1px solid;
+  border-radius: 1000px;
+  font: inherit;
+  font-weight: 500;
+  color: var(--text-color);
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+#add-button:hover {
+  background-color: var(--primary-color);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.todo {
+  margin-bottom: 10px;
+  padding: 0px 16px;
+  background-color: var(--card-bg);
+  color: var(--text-dark);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.todo-text {
 }
