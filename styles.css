@@ -177,6 +177,16 @@ input[type="checkbox"]:checked ~ .todo-text {
   color: var(--secondary-color);
 }
 
+.drag-indicator {
+  padding-left: 0;
+  padding-right: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 200ms ease;
+  cursor: pointer;
+}
+
 @media (max-width: 500px) {
   html {
     font-size: 12pt;
