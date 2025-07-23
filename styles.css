@@ -117,5 +117,88 @@ form {
   align-items: center;
 }
 
-.todo-text {
+.todo .todo-text {
+  padding: 15px;
+  padding-right: 0;
+  flex-grow: 1;
+}
+
+.delete-button,
+.schedule-button {
+  padding: 3px;
+  background: none;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.schedule-button {
+  padding-right: 15px;
+  transition: 200ms ease;
+}
+
+.schedule-button:hover svg {
+  fill: var(--secondary-color);
+}
+
+.delete-button svg {
+  transition: 200ms ease;
+}
+
+.delete-button:hover svg {
+  fill: red;
+}
+
+.custom-checkbox {
+  border: 2px solid var(--primary-color);
+  border-radius: 50%;
+  min-height: 20px;
+  min-width: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  transition: 200ms ease;
+  cursor: pointer;
+}
+
+input[type="checkbox"] {
+  display: none;
+}
+
+input[type="checkbox"]:checked ~ .custom-checkbox {
+  background-color: var(--primary-color);
+}
+
+input[type="checkbox"]:checked ~ .todo-text {
+  text-decoration: line-through;
+  color: var(--secondary-color);
+}
+
+@media (max-width: 500px) {
+  html {
+    font-size: 12pt;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    position: static;
+  }
+
+  #add-button {
+    position: unset;
+    width: 100%;
+    margin-top: 10px;
+    padding: 15px;
+    height: auto;
+  }
+
+  h1 {
+    margin-top: 50px;
+    font-size: 15vw;
+  }
 }
