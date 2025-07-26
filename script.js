@@ -12,20 +12,19 @@ let allTodos = [];
 function addTodo(todo) {
   const todoText = todoInput.value.trim();
   const todoObject = {
-    id: allTodos.length + 1,
+    id: `${Date.now()}-${Math.floor(Math.random() * 1000)}`, // Unique time-based ID
     text: todoText,
     completed: false,
   };
   allTodos.push(todoObject);
-  todoIndex = "todo-" + allTodos.length;
   const todoLI = document.createElement("li");
   todoLI.className = "todo";
   todoLI.innerHTML = `
-      <input type="checkbox" id="${todoIndex}" />
-      <label for="${todoIndex}" class="drag-indicator">
+      <input type="checkbox" id="${todoObject.id}" />
+      <label for="${todoObject.id}" class="drag-indicator">
         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M360-160q-33 0-56.5-23.5T280-240q0-33 23.5-56.5T360-320q33 0 56.5 23.5T440-240q0 33-23.5 56.5T360-160Zm240 0q-33 0-56.5-23.5T520-240q0-33 23.5-56.5T600-320q33 0 56.5 23.5T680-240q0 33-23.5 56.5T600-160ZM360-400q-33 0-56.5-23.5T280-480q0-33 23.5-56.5T360-560q33 0 56.5 23.5T440-480q0 33-23.5 56.5T360-400Zm240 0q-33 0-56.5-23.5T520-480q0-33 23.5-56.5T600-560q33 0 56.5 23.5T680-480q0 33-23.5 56.5T600-400ZM360-640q-33 0-56.5-23.5T280-720q0-33 23.5-56.5T360-800q33 0 56.5 23.5T440-720q0 33-23.5 56.5T360-640Zm240 0q-33 0-56.5-23.5T520-720q0-33 23.5-56.5T600-800q33 0 56.5 23.5T680-720q0 33-23.5 56.5T600-640Z"/></svg>
       </label>
-      <label for="${todoIndex}" class="custom-checkbox">
+      <label for="${todoObject.id}" class="custom-checkbox">
         <svg
           fill="var(--card-bg)"
           xmlns="http://www.w3.org/2000/svg"
@@ -37,8 +36,8 @@ function addTodo(todo) {
           <path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z" />
         </svg>
       </label>
-      <label for="${todoIndex}" class="todo-text">${todoText}</label>
-      <button for="${todoIndex}" class="schedule-button">
+      <label for="${todoObject.id}" class="todo-text">${todoText}</label>
+      <button for="${todoObject.id}" class="schedule-button">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           height="24px"
@@ -51,7 +50,7 @@ function addTodo(todo) {
           />
         </svg>
       </button>
-      <button class="delete-button">
+      <button for="${todoObject.id}" class="delete-button">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           height="24px"
@@ -67,4 +66,14 @@ function addTodo(todo) {
   `;
   todoList.append(todoLI);
   todoInput.value = "";
+
+  const deleteButton = todoLI.querySelector(".delete-button");
+  deleteButton.onclick = () => {
+    deleteTodo(todoObject.id, todoLI);
+  };
+}
+
+function deleteTodo(id, todoLI) {
+  todoLI.remove();
+  allTodos = allTodos.filter((todo) => todo.id !== id);
 }
