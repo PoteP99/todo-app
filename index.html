@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Todo App</title>
     <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
   </head>
   <body>
     <h1>Todo App</h1>
@@ -49,6 +53,7 @@
             </svg>
           </label>
           <label for="todo-1" class="todo-text">Work Out</label>
+          <input type="datetime-local" id="todo-1" />
           <button for="todo-1" class="schedule-button">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -124,5 +129,6 @@
     </div>
 
     <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   </body>
 </html>
