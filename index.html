@@ -24,8 +24,7 @@
         <button id="add-button" type="submit">ADD</button>
       </form>
       <ul id="todo-list">
-        <!--
-        <li class="todo">
+        <li class="todo" draggable="true">
           <input type="checkbox" id="todo-1" />
           <label for="todo-1" class="drag-indicator">
             <svg
@@ -53,7 +52,12 @@
             </svg>
           </label>
           <label for="todo-1" class="todo-text">Work Out</label>
-          <input type="datetime-local" id="todo-1" />
+          <input
+            type="datetime-local"
+            id="todo-1"
+            class="schedule-input"
+            style="opacity: 0"
+          />
           <button for="todo-1" class="schedule-button">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -81,7 +85,7 @@
             </svg>
           </button>
         </li>
-        
+        <!--
         <li class="todo">
           <input type="checkbox" id="todo-2" />
           <label for="todo-2" class="custom-checkbox">

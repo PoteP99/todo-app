@@ -211,6 +211,10 @@ input[type="checkbox"]:checked ~ .todo-text {
   color: var(--secondary-color);
 }
 
+input[type="checkbox"]:checked ~ .schedule-input {
+  color: var(--secondary-color);
+}
+
 .drag-indicator {
   padding-left: 0;
   padding-right: 10px;
@@ -219,4 +223,9 @@ input[type="checkbox"]:checked ~ .todo-text {
   align-items: center;
   transition: 200ms ease;
   cursor: pointer;
+}
+
+input[type="datetime-local"] {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: medium;
 }

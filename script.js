@@ -76,9 +76,17 @@ function addTodo(todo) {
 
     const scheduleInput = todoLI.querySelector(".schedule-input");
     const scheduleButton = todoLI.querySelector(".schedule-button");
+
     scheduleButton.addEventListener("click", () => {
       scheduleInput.showPicker();
-      scheduleInput.style.opacity = 1;
+    });
+
+    scheduleInput.addEventListener("change", () => {
+      if (scheduleInput.value !== "") {
+        scheduleInput.style.opacity = 1;
+      } else {
+        scheduleInput.style.opacity = 0;
+      }
     });
   }
 }
