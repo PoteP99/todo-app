@@ -8,18 +8,23 @@ addButton.addEventListener("click", function (e) {
 });
 
 let allTodos = [];
+let draggedId = null;
 
-function addTodo(todo) {
+function addTodo() {
   const todoText = todoInput.value.trim();
   if (todoText.length >= 1) {
+    // Adding Todo //
     const todoObject = {
       id: `${Date.now()}-${Math.floor(Math.random() * 1000)}`, // Unique time-based ID
       text: todoText,
       completed: false,
+      order: allTodos.length,
     };
     allTodos.push(todoObject);
     const todoLI = document.createElement("li");
     todoLI.className = "todo";
+    todoLI.id = todoObject.id;
+    todoLI.draggable = true;
     todoLI.innerHTML = `
         <input type="checkbox" id="${todoObject.id}" />
         <label for="${todoObject.id}" class="drag-indicator">
@@ -69,11 +74,16 @@ function addTodo(todo) {
     todoList.append(todoLI);
     todoInput.value = "";
 
+    // Debug //
+    console.log(allTodos);
+
+    // Delete Event //
     const deleteButton = todoLI.querySelector(".delete-button");
     deleteButton.onclick = () => {
       deleteTodo(todoObject.id, todoLI);
     };
 
+    // Scheduling Event //
     const scheduleInput = todoLI.querySelector(".schedule-input");
     const scheduleButton = todoLI.querySelector(".schedule-button");
 
@@ -88,10 +98,43 @@ function addTodo(todo) {
         scheduleInput.style.opacity = 0;
       }
     });
+
+    // Dragging Event //
+
+    todoLI.addEventListener("dragstart", () => {
+      draggedId = todoObject.id;
+      console.log(draggedId); // debug //
+    });
+
+    todoLI.addEventListener("dragover", (e) => {
+      e.preventDefault();
+    });
+
+    todoLI.addEventListener("drop", (e) => {
+      const dropTarget = e.target.closest(".todo");
+      const targetId = dropTarget.id;
+      console.log(targetId); // debug //
+
+      const draggedTodo = allTodos.find((todo) => todo.id === draggedId);
+      const targetTodo = allTodos.find((todo) => todo.id === targetId);
+
+      const tempOrder = draggedTodo.order;
+      draggedTodo.order = targetTodo.order;
+      targetTodo.order = tempOrder;
+
+      console.log(allTodos); // debug //
+
+      updateTodos();
+    });
   }
 }
 
 function deleteTodo(id, todoLI) {
   todoLI.remove();
   allTodos = allTodos.filter((todo) => todo.id !== id);
+
+  updateOrder();
 }
+
+function updateTodos() {}
+function updateOrder() {}
