@@ -21,6 +21,31 @@ function addTodo() {
       order: allTodos.length,
     };
     allTodos.push(todoObject);
+    renderTodo();
+    todoInput.value = "";
+  }
+}
+
+function deleteTodo(id, todoLI) {
+  todoLI.remove();
+  allTodos = allTodos.filter((todo) => todo.id !== id);
+  allTodos = updateTodos(allTodos);
+  renderTodo();
+}
+
+function updateTodos(todoArray) {
+  let sortedTodos = [...todoArray].sort((a, b) => a.order - b.order); // Sorting
+  for (let i = 0; i < sortedTodos.length; i++) {
+    // Re-Order incase of deletion
+    sortedTodos[i].order = i;
+  }
+  return sortedTodos;
+}
+
+function renderTodo() {
+  todoList.innerHTML = ""; // Clear List
+
+  for (const todoObject of allTodos) {
     const todoLI = document.createElement("li");
     todoLI.className = "todo";
     todoLI.id = todoObject.id;
@@ -42,7 +67,7 @@ function addTodo() {
             <path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z" />
           </svg>
         </label>
-        <label for="${todoObject.id}" class="todo-text">${todoText}</label>
+        <label for="${todoObject.id}" class="todo-text">${todoObject.text}</label>
         <input type="datetime-local" id="${todoObject.id}" class="schedule-input" style="opacity: 0"/>
         <button for="${todoObject.id}" class="schedule-button">
           <svg
@@ -72,10 +97,6 @@ function addTodo() {
         </button>
     `;
     todoList.append(todoLI);
-    todoInput.value = "";
-
-    // Debug //
-    console.log(allTodos);
 
     // Delete Event //
     const deleteButton = todoLI.querySelector(".delete-button");
@@ -124,17 +145,8 @@ function addTodo() {
 
       console.log(allTodos); // debug //
 
-      updateTodos();
+      allTodos = updateTodos(allTodos);
+      renderTodo(allTodos);
     });
   }
 }
-
-function deleteTodo(id, todoLI) {
-  todoLI.remove();
-  allTodos = allTodos.filter((todo) => todo.id !== id);
-
-  updateOrder();
-}
-
-function updateTodos() {}
-function updateOrder() {}
