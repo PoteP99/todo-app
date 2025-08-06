@@ -202,17 +202,17 @@ input[type="checkbox"] {
   display: none;
 }
 
-input[type="checkbox"]:checked ~ .custom-checkbox {
-  background-color: var(--primary-color);
-}
-
-input[type="checkbox"]:checked ~ .todo-text {
+.todo.completed .todo-text {
   text-decoration: line-through;
   color: var(--secondary-color);
 }
 
-input[type="checkbox"]:checked ~ .schedule-input {
+.todo.completed .schedule-input {
   color: var(--secondary-color);
+}
+
+.todo.completed .custom-checkbox {
+  background-color: var(--primary-color);
 }
 
 .drag-indicator {

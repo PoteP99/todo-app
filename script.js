@@ -18,6 +18,7 @@ function addTodo() {
       id: `${Date.now()}-${Math.floor(Math.random() * 1000)}`, // Unique time-based ID
       text: todoText,
       completed: false,
+      schedule: "",
       order: allTodos.length,
     };
     allTodos.push(todoObject);
@@ -47,11 +48,11 @@ function renderTodo() {
 
   for (const todoObject of allTodos) {
     const todoLI = document.createElement("li");
-    todoLI.className = "todo";
+    todoLI.className = `todo ${todoObject.completed ? "completed" : ""}`;
     todoLI.id = todoObject.id;
     todoLI.draggable = true;
     todoLI.innerHTML = `
-        <input type="checkbox" id="${todoObject.id}" />
+        <input type="checkbox" id="${todoObject.id}"/>
         <label for="${todoObject.id}" class="drag-indicator">
           <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M360-160q-33 0-56.5-23.5T280-240q0-33 23.5-56.5T360-320q33 0 56.5 23.5T440-240q0 33-23.5 56.5T360-160Zm240 0q-33 0-56.5-23.5T520-240q0-33 23.5-56.5T600-320q33 0 56.5 23.5T680-240q0 33-23.5 56.5T600-160ZM360-400q-33 0-56.5-23.5T280-480q0-33 23.5-56.5T360-560q33 0 56.5 23.5T440-480q0 33-23.5 56.5T360-400Zm240 0q-33 0-56.5-23.5T520-480q0-33 23.5-56.5T600-560q33 0 56.5 23.5T680-480q0 33-23.5 56.5T600-400ZM360-640q-33 0-56.5-23.5T280-720q0-33 23.5-56.5T360-800q33 0 56.5 23.5T440-720q0 33-23.5 56.5T360-640Zm240 0q-33 0-56.5-23.5T520-720q0-33 23.5-56.5T600-800q33 0 56.5 23.5T680-720q0 33-23.5 56.5T600-640Z"/></svg>
         </label>
@@ -98,15 +99,15 @@ function renderTodo() {
     `;
     todoList.append(todoLI);
 
-    // Delete Event //
-    const deleteButton = todoLI.querySelector(".delete-button");
-    deleteButton.onclick = () => {
-      deleteTodo(todoObject.id, todoLI);
-    };
-
     // Scheduling Event //
     const scheduleInput = todoLI.querySelector(".schedule-input");
     const scheduleButton = todoLI.querySelector(".schedule-button");
+
+    scheduleInput.value = todoObject.schedule;
+
+    if (todoObject.schedule !== "") {
+      scheduleInput.style.opacity = 1;
+    }
 
     scheduleButton.addEventListener("click", () => {
       scheduleInput.showPicker();
@@ -115,16 +116,29 @@ function renderTodo() {
     scheduleInput.addEventListener("change", () => {
       if (scheduleInput.value !== "") {
         scheduleInput.style.opacity = 1;
+        todoObject.schedule = scheduleInput.value;
       } else {
         scheduleInput.style.opacity = 0;
       }
     });
 
+    // Completion Event //
+    const customCheckbox = todoLI.querySelector(".custom-checkbox");
+    customCheckbox.addEventListener("click", () => {
+      todoObject.completed = !todoObject.completed;
+      renderTodo();
+    });
+
+    // Delete Event //
+    const deleteButton = todoLI.querySelector(".delete-button");
+    deleteButton.onclick = () => {
+      deleteTodo(todoObject.id, todoLI);
+    };
+
     // Dragging Event //
 
     todoLI.addEventListener("dragstart", () => {
       draggedId = todoObject.id;
-      console.log(draggedId); // debug //
     });
 
     todoLI.addEventListener("dragover", (e) => {
@@ -134,7 +148,6 @@ function renderTodo() {
     todoLI.addEventListener("drop", (e) => {
       const dropTarget = e.target.closest(".todo");
       const targetId = dropTarget.id;
-      console.log(targetId); // debug //
 
       const draggedTodo = allTodos.find((todo) => todo.id === draggedId);
       const targetTodo = allTodos.find((todo) => todo.id === targetId);
@@ -142,8 +155,6 @@ function renderTodo() {
       const tempOrder = draggedTodo.order;
       draggedTodo.order = targetTodo.order;
       targetTodo.order = tempOrder;
-
-      console.log(allTodos); // debug //
 
       allTodos = updateTodos(allTodos);
       renderTodo(allTodos);
