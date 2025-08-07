@@ -149,12 +149,18 @@ function renderTodo() {
       const dropTarget = e.target.closest(".todo");
       const targetId = dropTarget.id;
 
-      const draggedTodo = allTodos.find((todo) => todo.id === draggedId);
-      const targetTodo = allTodos.find((todo) => todo.id === targetId);
+      if (draggedId !== targetId) {
+        const draggedTodo = allTodos.find((todo) => todo.id === draggedId);
+        const targetTodo = allTodos.find((todo) => todo.id === targetId);
 
-      const tempOrder = draggedTodo.order;
-      draggedTodo.order = targetTodo.order;
-      targetTodo.order = tempOrder;
+        if (targetTodo.order < draggedTodo.order) {
+          draggedTodo.order = targetTodo.order;
+          for (let i = targetTodo.order + 1; i < allTodos.length; i++) {
+            console.log(i);
+            // Target.order = i iterate until the end
+          }
+        }
+      }
 
       allTodos = updateTodos(allTodos);
       renderTodo(allTodos);
