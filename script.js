@@ -8,7 +8,11 @@ addButton.addEventListener("click", function (e) {
 });
 
 let allTodos = [];
-let draggedId = null;
+
+let dragState = {
+  id: null,
+  position: "",
+};
 
 function addTodo() {
   const todoText = todoInput.value.trim();
@@ -138,32 +142,57 @@ function renderTodo() {
     // Dragging Event //
 
     todoLI.addEventListener("dragstart", () => {
-      draggedId = todoObject.id;
+      dragState.id = todoObject.id;
+      todoLI.classList.add("dragging");
     });
 
     todoLI.addEventListener("dragover", (e) => {
       e.preventDefault();
+
+      /*
+      const mouseY = e.clientY;
+      const dropTarget = e.target.closest(".todo");
+      const targetRect = dropTarget.getBoundingClientRect();
+      const middleY = targetRect.top + targetRect.height / 2;
+
+      if (mouseY < middleY) {
+        dropPosition = "before";
+      } else {
+        dropPosition = "after";
+      }
+      */
     });
 
     todoLI.addEventListener("drop", (e) => {
       const dropTarget = e.target.closest(".todo");
+      if (!dropTarget) {
+        return;
+      }
       const targetId = dropTarget.id;
+      const reorder = [...allTodos];
 
-      if (draggedId !== targetId) {
-        const draggedTodo = allTodos.find((todo) => todo.id === draggedId);
-        const targetTodo = allTodos.find((todo) => todo.id === targetId);
+      if (dragState.id !== targetId && targetId !== null) {
+        const draggedTodo = allTodos.find((todo) => todo.id === dragState.id);
+        // const targetTodo = allTodos.find((todo) => todo.id === targetId);
+        const draggedIndex = allTodos.findIndex(
+          (todo) => todo.id === dragState.id
+        );
+        const targetIndex = allTodos.findIndex((todo) => todo.id === targetId);
 
-        if (targetTodo.order < draggedTodo.order) {
-          draggedTodo.order = targetTodo.order;
-          for (let i = targetTodo.order + 1; i < allTodos.length; i++) {
-            console.log(i);
-            // Target.order = i iterate until the end
-          }
-        }
+        const [dragged] = reorder.splice(draggedIndex, 1);
+
+        reorder.splice(targetIndex, 0, draggedTodo);
       }
 
-      allTodos = updateTodos(allTodos);
+      for (let i = 0; i < reorder.length; i++) {
+        reorder[i].order = i;
+      }
+
+      allTodos = updateTodos(reorder);
       renderTodo(allTodos);
+
+      dragState.id = null;
+      todoLI.classList.remove("dragging");
     });
   }
 }
