@@ -229,3 +229,18 @@ input[type="datetime-local"] {
   font-family: Arial, Helvetica, sans-serif;
   font-size: medium;
 }
+
+.dragging {
+  opacity: 0.7;
+  transform: scale(1.02);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.drag-before {
+  border-top: 3px dashed #007bff;
+}
+
+.drag-after {
+  border-bottom: 3px dashed #007bff;
+}

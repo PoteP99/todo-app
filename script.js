@@ -12,6 +12,7 @@ let allTodos = [];
 let dragState = {
   id: null,
   position: "",
+  target: null,
 };
 
 function addTodo() {
@@ -149,18 +150,29 @@ function renderTodo() {
     todoLI.addEventListener("dragover", (e) => {
       e.preventDefault();
 
-      /*
       const mouseY = e.clientY;
-      const dropTarget = e.target.closest(".todo");
-      const targetRect = dropTarget.getBoundingClientRect();
+      dragState.target = e.target.closest(".todo");
+      const targetRect = dragState.target.getBoundingClientRect();
       const middleY = targetRect.top + targetRect.height / 2;
 
       if (mouseY < middleY) {
-        dropPosition = "before";
+        dragState.position = "before";
+        dragState.target.classList.add("drag-before");
+        dragState.target.classList.remove("drag-after");
       } else {
-        dropPosition = "after";
+        dragState.position = "after";
+        dragState.target.classList.add("drag-after");
+        dragState.target.classList.remove("drag-before");
       }
-      */
+    });
+
+    todoLI.addEventListener("dragleave", (e) => {
+      e.preventDefault();
+
+      if (dragState.target) {
+        dragState.target.classList.remove("drag-before");
+        dragState.target.classList.remove("drag-after");
+      }
     });
 
     todoLI.addEventListener("drop", (e) => {
@@ -177,11 +189,19 @@ function renderTodo() {
         const draggedIndex = allTodos.findIndex(
           (todo) => todo.id === dragState.id
         );
-        const targetIndex = allTodos.findIndex((todo) => todo.id === targetId);
+        let targetIndex = allTodos.findIndex((todo) => todo.id === targetId);
 
         const [dragged] = reorder.splice(draggedIndex, 1);
 
-        reorder.splice(targetIndex, 0, draggedTodo);
+        if (draggedIndex < targetIndex) {
+          targetIndex--;
+        }
+
+        if (dragState.position === "before") {
+          reorder.splice(targetIndex, 0, draggedTodo);
+        } else {
+          reorder.splice(targetIndex + 1, 0, draggedTodo);
+        }
       }
 
       for (let i = 0; i < reorder.length; i++) {
@@ -193,6 +213,11 @@ function renderTodo() {
 
       dragState.id = null;
       todoLI.classList.remove("dragging");
+
+      if (dragState.target) {
+        dragState.target.classList.remove("drag-before");
+        dragState.target.classList.remove("drag-after");
+      }
     });
   }
 }
