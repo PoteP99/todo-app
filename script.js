@@ -1,6 +1,8 @@
 const todoInput = document.getElementById("todo-input");
 const addButton = document.querySelector("#add-button");
 const todoList = document.querySelector("#todo-list");
+const todoContainer = document.querySelector("#todo-container");
+const indicator = document.getElementById("drop-indicator");
 
 addButton.addEventListener("click", function (e) {
   e.preventDefault();
@@ -145,6 +147,7 @@ function renderTodo() {
     todoLI.addEventListener("dragstart", () => {
       dragState.id = todoObject.id;
       todoLI.classList.add("dragging");
+      indicator.style.display = "block";
     });
 
     todoLI.addEventListener("dragover", (e) => {
@@ -154,15 +157,22 @@ function renderTodo() {
       dragState.target = e.target.closest(".todo");
       const targetRect = dragState.target.getBoundingClientRect();
       const middleY = targetRect.top + targetRect.height / 2;
+      const containerRect = todoContainer.getBoundingClientRect();
 
       if (mouseY < middleY) {
         dragState.position = "before";
+        /*
         dragState.target.classList.add("drag-before");
         dragState.target.classList.remove("drag-after");
+        */
+        indicator.style.top = targetRect.top - containerRect.top + "px";
       } else {
         dragState.position = "after";
+        /*
         dragState.target.classList.add("drag-after");
         dragState.target.classList.remove("drag-before");
+        */
+        indicator.style.top = targetRect.bottom - containerRect.top + "px";
       }
     });
 
@@ -210,9 +220,12 @@ function renderTodo() {
 
       allTodos = updateTodos(reorder);
       renderTodo(allTodos);
+    });
 
+    todoLI.addEventListener("dragend", () => {
       dragState.id = null;
       todoLI.classList.remove("dragging");
+      indicator.style.display = "none";
 
       if (dragState.target) {
         dragState.target.classList.remove("drag-before");
