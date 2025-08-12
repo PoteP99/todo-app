@@ -9,7 +9,8 @@ addButton.addEventListener("click", function (e) {
   addTodo();
 });
 
-let allTodos = [];
+let allTodos = getTodo();
+renderTodo();
 
 let dragState = {
   id: null,
@@ -30,6 +31,7 @@ function addTodo() {
     };
     allTodos.push(todoObject);
     renderTodo();
+    saveTodo();
     todoInput.value = "";
   }
 }
@@ -38,6 +40,7 @@ function deleteTodo(id, todoLI) {
   todoLI.remove();
   allTodos = allTodos.filter((todo) => todo.id !== id);
   allTodos = updateTodos(allTodos);
+  saveTodo();
   renderTodo();
 }
 
@@ -133,6 +136,7 @@ function renderTodo() {
     const customCheckbox = todoLI.querySelector(".custom-checkbox");
     customCheckbox.addEventListener("click", () => {
       todoObject.completed = !todoObject.completed;
+      saveTodo();
       renderTodo();
     });
 
@@ -219,6 +223,7 @@ function renderTodo() {
       }
 
       allTodos = updateTodos(reorder);
+      saveTodo();
       renderTodo(allTodos);
     });
 
@@ -233,4 +238,14 @@ function renderTodo() {
       }
     });
   }
+}
+
+function saveTodo() {
+  const todoJson = JSON.stringify(allTodos);
+  localStorage.setItem("todos", todoJson);
+}
+
+function getTodo() {
+  const todos = localStorage.getItem("todos") || "[]";
+  return JSON.parse(todos);
 }
